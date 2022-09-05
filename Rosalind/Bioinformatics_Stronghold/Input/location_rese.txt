@@ -1,0 +1,16 @@
+#location rese
+
+#graph the string aginst itself and look for reveresals
+
+  A B C A B C
+A X
+
+B  X
+
+C    X
+
+A      X
+
+B        X
+
+C           X
