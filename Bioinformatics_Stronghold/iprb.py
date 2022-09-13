@@ -1,3 +1,5 @@
+
+
 def calculate_dominant_probablity(k, m, n):
     '''Given a number of individuals homozygous dominant (k, AA), heterzygous 
     (Aa, m), and homozygous recessive (aa, n) for allele A in population t,
