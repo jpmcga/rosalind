@@ -1,5 +1,8 @@
 #!/usr/bin/env python3.8
 
+# Solution for Calculating Expected Offspring by Rosalind.com
+# See https://rosalind.info/problems/iev/
+
 from utils.utils import mendelian_dominance_table as mdt
 
 

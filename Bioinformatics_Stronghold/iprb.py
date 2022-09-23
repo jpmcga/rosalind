@@ -1,4 +1,6 @@
-
+# Solution for Mendel's First Law by Rosalind.com
+# See https://rosalind.info/problems/iprb/
+# First solved June 2020, revised Sept 2022
 
 def calculate_dominant_probablity(k, m, n):
     '''Given a number of individuals homozygous dominant (k, AA), heterzygous 
