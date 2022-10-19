@@ -7,7 +7,7 @@ import sys
 def count_nucleotides(string):
     '''Returns list with nucleotide counts in order A, C, G, T'''
 
-    assert string.isalpha(), "Input must alphabet"
+    assert string.isalpha(), "Input must be alphabet"
 
     return [string.upper().count(nuc) for nuc in ['A', 'C', 'G', 'T']]
 
