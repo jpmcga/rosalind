@@ -1,3 +1,7 @@
+# Solution for Counting Point Mutations by Rosalind.com
+# See https://rosalind.info/problems/hamm/
+# Solved May 2020, revised October 2022
+
 import sys
 
 def get_hamming(s1, s2):
