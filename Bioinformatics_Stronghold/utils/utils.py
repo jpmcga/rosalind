@@ -7,6 +7,7 @@ basepair_table = {'A': 'T',
                'G': 'C'
                }
 
+
 mendelian_dominance_table = {'AA-AA' : 1,
                         'AA-Aa' : 1,
                         'AA-aa' : 1,
@@ -15,42 +16,45 @@ mendelian_dominance_table = {'AA-AA' : 1,
                         'aa-aa' : 0
 }
    
-def dna_to_rna(string):
-    string = string.upper()
-    string = string.replace("T", "U")
-    
-    return string
+def test_nucleotides(string: str):
+    '''Check all characters in string are one of A,T,C,G.'''
+    assert all(ele.upper() in list("ATCG") for ele in string),\
+                    "Input must be DNA nucleotides"
 
-def reverse_comp(string):
-    
-    string = string.upper()
-    
-    dct = {'A': 'T',
-           'T': 'A',
-           'C': 'G',
-           'G': 'C'}
-    
-    new_string = ""
-    for char in string[::-1]:
-        new_string = new_string + dct[char]
-    
-    return new_string
+def transcribe_dna(dna_seq: str):
+    try:
+        dna_seq = dna_seq.upper().rstrip()
+    except TypeError:
+        "Input must be a string"
+    test_nucleotides(dna_seq)
 
-def fasta_to_dict(filename):
+    return dna_seq.replace("T", "U")
 
-    file = open(f"{filename}")
 
-    # Get dict from fasta
-    sequences = defaultdict(str)
+def get_hamming(s1: str, s2: str):
+    assert len(s1) == len(s2), "Strings must be same length!"
+    return sum([1 for pos in range(len(s1)) if s1[pos] != s2[pos]])
 
-    for line in file:
-        line = line.rstrip()
-        if line.startswith('>'):
-            name = line.strip('>')
-        else:
-            sequences[name] = sequences[name] + line
+
+def reverse_comp(dna_seq: str):
+    test_nucleotides(dna_seq)
+    return ''.join([ basepair_table[bp] for bp in dna_seq.upper()[::-1]])
+    
+
+def fasta_to_dict(filename: str):
+    with open(f"{filename}") as file:
+
+        # Get dict form fasta
+        sequences = defaultdict(str)
+
+        for line in file:
+            if line.startswith('>'):
+                name = line.strip('>').rstrip()
+            else:
+                sequences[name] = sequences[name] + line.rstrip()
     
     return sequences
+
 
 codon_table = {'UUU' : 'F',
         'UUC' : 'F',
@@ -118,6 +122,7 @@ codon_table = {'UUU' : 'F',
         'GGG' : 'G'
         }
 
+
 aa_mass_table = {'A': 71.03711,
         'C': 103.00919,
         'D': 115.02694,
@@ -139,3 +144,4 @@ aa_mass_table = {'A': 71.03711,
         'W': 186.07931,
         'Y': 163.06333
         }
+
