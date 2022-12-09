@@ -1,22 +1,22 @@
-from itertools import product
-import sys
+# Solution for Enumerating k-mers Lexicographically by Rosalind.com
+# See https://rosalind.info/problems/lexf/
+# Solved July 2020, revised December 2022
+
+from itertools import product; import sys
 
 def order_kmers_lex(alphabet, num):
 
-	lst = alphabet.split()
-	return list(product(lst, repeat=num))
+	return list(product(alphabet.split(), repeat=num))
 
 def main():
 
-	in_handle = open(sys.argv[1])
-	alphabet = in_handle.readline().strip()
-	num = int(in_handle.readline())
-	lst = order_kmers_lex(alphabet, num)
-	res = '\n'.join(''.join(x) for x in lst)
+	out_f = "results/result_lexf.txt"
 
-	out_handle = open(sys.argv[2], "w")
-	out_handle.write(res)
-	out_handle.close()
+	with open(sys.argv[1]) as in_hand, open(out_f, "w") as out_hand:
+		alphabet, num  = [x.rstrip() for x in in_hand.readlines()]
+		res = '\n'.join(''.join(x) for x in order_kmers_lex(alphabet, int(num)))
+
+		out_hand.write(res)
 
 if __name__ == '__main__':
 	main()
