@@ -21,7 +21,7 @@ def test_nucleotides(string: str):
     assert all(ele.upper() in list("ATCG") for ele in string),\
                     "Input must be DNA nucleotides"
 
-def transcribe_dna(dna_seq: str):
+def transcribe_dna(dna_seq: str) -> str:
     try:
         dna_seq = dna_seq.upper().rstrip()
     except TypeError:
@@ -31,9 +31,14 @@ def transcribe_dna(dna_seq: str):
     return dna_seq.replace("T", "U")
 
 
-def get_hamming(s1: str, s2: str):
+def get_hamming(s1: str, s2: str) -> int:
     assert len(s1) == len(s2), "Strings must be same length!"
     return sum([1 for pos in range(len(s1)) if s1[pos] != s2[pos]])
+
+
+def get_gc(seq: str) -> float:
+    seq = seq.upper()
+    return ((seq.count("G") + seq.count("C")) / len(seq)) * 100
 
 
 def reverse_comp(dna_seq: str):
@@ -41,18 +46,23 @@ def reverse_comp(dna_seq: str):
     return ''.join([ basepair_table[bp] for bp in dna_seq.upper()[::-1]])
     
 
+from collections import defaultdict
+
 def fasta_to_dict(filename: str):
+        
     with open(f"{filename}") as file:
 
-        # Get dict form fasta
-        sequences = defaultdict(str)
+        try:            
+            sequences = defaultdict(str)
+            for line in file:
+                if line.startswith('>'):
+                    name = line.strip('>').rstrip()
+                else:
+                    sequences[name] = sequences[name] + line.rstrip()
+        except:
+            if '>' not in file.read():
+                raise IOError("Input must be FASTA")
 
-        for line in file:
-            if line.startswith('>'):
-                name = line.strip('>').rstrip()
-            else:
-                sequences[name] = sequences[name] + line.rstrip()
-    
     return sequences
 
 
