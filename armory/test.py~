@@ -1,5 +1,0 @@
-import ..utils.utils
-import sys
-
-print(utils.codon_table)
-print(sys.path)

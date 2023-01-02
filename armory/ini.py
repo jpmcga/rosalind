@@ -1,22 +1,13 @@
-from Bio.Seq import Seq
-import sys
+# Solution for Introduction to the Bioinformatics Armory by Rosalind.com
+# See https://rosalind.info/problems/ini/
+# Solved July 2020, revised Jan 2023
 
-def count_nucleotides(sequence):
+def count_nucleotides(sequence: str) -> list:
+	'''Return list with counts of A,C,G,T, respectively'''
 
-	sequence = Seq(sequence)
-
-	A = sequence.count("A")
-	C = sequence.count("C") 
-	G = sequence.count("G")
-	T = sequence.count("T")
-
-	return A, C, G, T
+	return [sequence.upper().count(nuc) for nuc in list('ACGT')]
 
 if __name__ == "__main__":
-	
-	filename = sys.argv[1]
-	sequence = open(filename).read().strip()
-	A, C, G, T = count_nucleotides(sequence)
-
-	print(f"{A} {C} {G} {T}")
+	a, c, g, t = count_nucleotides(input("Enter DNA sequence: "))
+	print(f"{a} {c} {g} {t}")
 
