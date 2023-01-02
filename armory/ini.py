@@ -1,6 +1,6 @@
 # Solution for Introduction to the Bioinformatics Armory by Rosalind.com
 # See https://rosalind.info/problems/ini/
-# Solved July 2020, revised Jan 2023
+# Solved Aug 2020, revised Jan 2023
 
 def count_nucleotides(sequence: str) -> list:
 	'''Return list with counts of A,C,G,T, respectively'''

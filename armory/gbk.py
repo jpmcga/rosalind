@@ -1,27 +1,30 @@
+# Solution for GenBank Introduction by Rosalind.com
+# See https://rosalind.info/problems/gbk/
+# Solved Aug 2020, revised Jan 2023
+
 from Bio import Entrez
-import sys
 
 def esearch_organism_date(
-					organism,
-					start,
-					end, 
-					database='nucleotide',
-					email='jpaulmcgann@gmail.com'
-					):
+                        organism,
+                        start,
+                        end,
+                        email = 'jpaulmcgann@gmail.com',
+                        database='nucleotide',
+                        ):
 
-	Entrez.email = email
-	handel = Entrez.esearch(
-							db=database,
-							term=f'{organism}[Organism] AND ({start}[PDAT] : {end}[PDAT])'
-						)
-	record  = Entrez.read(handel)
+    Entrez.email = email
+    handle = Entrez.esearch(
+                    db=database,
+                    term=f'{organism}[Organism] AND ({start}[PDAT] : {end}[PDAT])'
+                    )
 
-	return record
+    return Entrez.read(handle)
 
 if __name__ == '__main__':
+    import sys
 
-	filename = sys.argv[1]
-	lines = open(filename).read().split("\n")
+    with open(sys.argv[1]) as file:
+        organism, start, end = file.read().rstrip().split("\n")
 
-	record = query_organism_date(lines[0], lines[1], lines[2])
-	print(record["Count"])
+    record = esearch_organism_date(organism, start, end)
+    print(record["Count"])
