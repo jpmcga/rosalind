@@ -7,7 +7,6 @@ basepair_table = {'A': 'T',
                'G': 'C'
                }
 
-
 mendelian_dominance_table = {'AA-AA' : 1,
                         'AA-Aa' : 1,
                         'AA-aa' : 1,
@@ -30,28 +29,21 @@ def transcribe_dna(dna_seq: str) -> str:
 
     return dna_seq.replace("T", "U")
 
-
 def get_hamming(s1: str, s2: str) -> int:
     assert len(s1) == len(s2), "Strings must be same length!"
     return sum([1 for pos in range(len(s1)) if s1[pos] != s2[pos]])
-
 
 def get_gc(seq: str) -> float:
     seq = seq.upper()
     return ((seq.count("G") + seq.count("C")) / len(seq)) * 100
 
-
-def reverse_comp(dna_seq: str):
+def reverse_comp(dna_seq: str) -> str:
     test_nucleotides(dna_seq)
     return ''.join([ basepair_table[bp] for bp in dna_seq.upper()[::-1]])
-    
 
-from collections import defaultdict
-
-def fasta_to_dict(filename: str):
+def fasta_to_dict(filename: str) -> dict:
         
     with open(f"{filename}") as file:
-
         try:            
             sequences = defaultdict(str)
             for line in file:
@@ -64,7 +56,6 @@ def fasta_to_dict(filename: str):
                 raise IOError("Input must be FASTA")
 
     return sequences
-
 
 codon_table = {'UUU' : 'F',
         'UUC' : 'F',
@@ -131,7 +122,6 @@ codon_table = {'UUU' : 'F',
         'GGA' : 'G',
         'GGG' : 'G'
         }
-
 
 aa_mass_table = {'A': 71.03711,
         'C': 103.00919,
