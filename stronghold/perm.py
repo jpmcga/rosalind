@@ -14,5 +14,6 @@ if __name__ == '__main__':
 	res = f'{len(permutations)}\n'
 	for perm in permutations:
 		res += ' '.join([str(i) for i in perm]) + '\n'
+		
 	with open('results/result_perm.txt', 'w') as out:
 		out.write(res[:-1])
