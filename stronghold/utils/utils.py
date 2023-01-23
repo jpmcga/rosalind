@@ -39,7 +39,7 @@ def get_gc(seq: str) -> float:
 
 def reverse_comp(dna_seq: str) -> str:
     test_nucleotides(dna_seq)
-    return ''.join([ basepair_table[bp] for bp in dna_seq.upper()[::-1]])
+    return ''.join([basepair_table[bp] for bp in dna_seq.upper()[::-1]])
 
 def fasta_to_dict(filename: str) -> dict:
         
