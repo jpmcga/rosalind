@@ -1,3 +1,7 @@
+# Solution for Locating Restriction Sites by Rosalind.com
+# See https://rosalind.info/problems/revp/
+# Solved January 2023
+
 from utils.utils import fasta_to_dict, reverse_comp
 
 
