@@ -13,7 +13,7 @@ def calc_dominant_offspring(mating_pairs, offspring=2):
     ''' 
 
     if len(mating_pairs) != 6:
-        raise ValueError("Enter mating pairs as list in order 'AA-AA, AA-Aa, \
+        raise ValueError("Enter mating pairs as list in order 'AA-AA, AA-Aa,\
         AA-aa, Aa-Aa, Aa-aa, aa-aa")
 
     mp_dom_prob = dict(zip(sorted(mdt), mating_pairs))
