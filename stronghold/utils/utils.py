@@ -56,14 +56,12 @@ def parse_fasta(entry: Union[TextIO, List[str]]) -> dict:
 def fasta_to_dict(fasta: str) -> dict:
     '''Passes either a filepath or string to parse_fasta'''
     
-    try:
+    if '>' in fasta:
+        return parse_fasta(fasta.split('\n'))    
+    elif '.' in fasta:
         with open(fasta) as file:
             return parse_fasta(file)
-    except FileNotFoundError:
-        if '>' in fasta:
-            return parse_fasta(fasta.split('\n'))
-        else:
-            return 'Check filepath'
+    return 'Check filepath'
 
 codon_table = {'UUU' : 'F',
         'UUC' : 'F',
