@@ -2,6 +2,7 @@
 # See https://rosalind.info/problems/revp/
 # Solved January 2023
 
+from typing import List, Tuple
 from utils.utils import fasta_to_dict, reverse_comp
 
 
@@ -9,7 +10,10 @@ def find_palindromes(
     string: str,
     min: int=4,
     max: int=12
-) -> list:
+) -> List[Tuple[int, int]]:
+    '''Given a sequence in fasta-format, returns the position and length of all
+    DNA palindromes in the sequence.
+    '''
 
     res = []
     for p in range(len(string)): # only search half the total len
