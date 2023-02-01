@@ -1,5 +1,5 @@
 from collections import defaultdict
-
+from typing import List, TextIO, Union
 
 basepair_table = {'A': 'T',
                'T': 'A',
@@ -17,45 +17,53 @@ mendelian_dominance_table = {'AA-AA' : 1,
    
 def test_nucleotides(string: str):
     '''Check all characters in string are one of A,T,C,G.'''
-    assert all(ele.upper() in list("ATCG") for ele in string),\
-                    "Input must be DNA nucleotides"
+    assert all(ele.upper() in list('ATCG') for ele in string),\
+                    'Input must be DNA nucleotides'
 
 def transcribe_dna(dna_seq: str) -> str:
     try:
         dna_seq = dna_seq.upper().rstrip()
     except TypeError:
-        "Input must be a string"
+        'Input must be a string'
     test_nucleotides(dna_seq)
 
-    return dna_seq.replace("T", "U")
+    return dna_seq.replace('T', 'U')
 
 def get_hamming(s1: str, s2: str) -> int:
-    assert len(s1) == len(s2), "Strings must be same length!"
+    assert len(s1) == len(s2), 'Strings must be same length!'
     return sum([1 for pos in range(len(s1)) if s1[pos] != s2[pos]])
 
 def get_gc(seq: str) -> float:
     seq = seq.upper()
-    return ((seq.count("G") + seq.count("C")) / len(seq)) * 100
+    return ((seq.count('G') + seq.count('C')) / len(seq)) * 100
 
 def reverse_comp(dna_seq: str) -> str:
     test_nucleotides(dna_seq)
     return ''.join([basepair_table[bp] for bp in dna_seq.upper()[::-1]])
 
-def fasta_to_dict(filename: str) -> dict:
-        
-    with open(f"{filename}") as file:
-        try:            
-            sequences = defaultdict(str)
-            for line in file:
-                if line.startswith('>'):
-                    name = line.strip('>').rstrip()
-                else:
-                    sequences[name] = sequences[name] + line.rstrip()
-        except:
-            if '>' not in file.read():
-                raise IOError("Input must be FASTA")
-
+def parse_fasta(entry: Union[TextIO, List[str]]) -> dict:
+    '''Iterate through file or list of each line of a fasta and return
+    dict with {id : sequence}.
+    '''
+    sequences = defaultdict(str)
+    for line in entry:
+        if line.startswith('>'):
+            name = line.strip('>').rstrip()
+        else:
+            sequences[name] += line.rstrip()
     return sequences
+
+def fasta_to_dict(fasta: str) -> dict:
+    '''Passes either a filepath or string to parse_fasta'''
+    
+    try:
+        with open(fasta) as file:
+            return parse_fasta(file)
+    except FileNotFoundError:
+        if '>' in fasta:
+            return parse_fasta(fasta.split('\n'))
+        else:
+            return 'Check filepath'
 
 codon_table = {'UUU' : 'F',
         'UUC' : 'F',

@@ -54,4 +54,5 @@ if __name__ == '__main__':
 
     with open(args.out, 'w') as out:
         for pair in get_overlaping_seqs(args.file, args.k)
-            out.write(f'{pair[0]} {pair[1]}\n') 
+            out.write(f'{pair[0]} {pair[1]}\n')
+             
