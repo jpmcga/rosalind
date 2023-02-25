@@ -1,4 +1,7 @@
+import re
+
 from collections import defaultdict
+from os import PathLike
 from typing import List, TextIO, Union
 
 basepair_table = {'A': 'T',
@@ -53,7 +56,7 @@ def parse_fasta(entry: Union[TextIO, List[str]]) -> dict:
             sequences[name] += line.rstrip()
     return sequences
 
-def fasta_to_dict(fasta: str) -> dict:
+def fasta_to_dict(fasta: Union[str, PathLike]) -> dict:
     '''Passes either a filepath or string to parse_fasta'''
     
     if '>' in fasta:
@@ -62,6 +65,15 @@ def fasta_to_dict(fasta: str) -> dict:
         with open(fasta) as file:
             return parse_fasta(file)
     return 'Check filepath'
+
+def fasta_to_list(fasta: Union[str, PathLike]) -> List[str]:
+    '''Returns list of strings from fasta file.'''
+
+    with open(fasta) as file:
+        return [
+            seq.replace('\n', '') for seq in re.split('>\w*\\n', file.read())
+            if len(seq) > 0
+        ]    
 
 codon_table = {'UUU' : 'F',
         'UUC' : 'F',
