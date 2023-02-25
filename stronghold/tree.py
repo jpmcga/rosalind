@@ -2,7 +2,10 @@
 # See https://rosalind.info/problems/tree/
 # Solved July 2020, revised February 2023
 
-def edges_to_complete(path):
+from os import PathLike
+from typing import Union
+
+def edges_to_complete(path: Union[str, PathLike]) -> int:
     '''Return number of edges required to complete tree with n
     nodes and provided adjacency list.'''
     with open(path) as f:
