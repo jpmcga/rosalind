@@ -27,10 +27,6 @@ def matched_strings(seqs: List[str]) -> List[str]:
                 match = follow.find(suffix)
                 if follow[:match] == lead[mid_p - len(follow[:match]):mid_p]:
                     matches[lead] = lead + follow[match + len(suffix):]                    
-                else:
-                    continue
-            else:
-                continue
 
     return list(matches.values())
 
