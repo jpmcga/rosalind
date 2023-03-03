@@ -1,4 +1,4 @@
-# Translating RNA into Protein by Rosalind.com
+# RNA Splicing by Rosalind.com
 # See https://rosalind.info/problems/splc/
 # Solved June 2020, revised March 2023
 
