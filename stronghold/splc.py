@@ -1,33 +1,19 @@
-from Bio.Seq import Seq
-from collections import defaultdict
+# Translating RNA into Protein by Rosalind.com
+# See https://rosalind.info/problems/splc/
+# Solved June 2020, revised March 2023
 
-# s = 'ATGGTCTACATAGCTGACAAACAGCACGTAGCAATCGGTCGAATCTCGAGAGGCATATGGTCACATGATCGGTCGAGCGTGTTTCAAAGTTTGCGCCTAG'
-#l = ['ATCGGTCGAA', 'ATCGGTCGAGCGTGT']
+from functools import reduce
+from typing import List
 
-def fasta_to_dict(filename):
+from utils import fasta_to_list, translate
 
-    file = open(f"{filename}")
+def splice(premrna: str, introns: List[str]) -> str:
+    '''Idea to use "reduce" from Rayan solution'''
 
-    # Get dict from fasta
-    sequences = defaultdict(str)
+    return reduce(lambda x,i: x.replace(i, ''), introns, premrna)
 
-    for line in file:
-        line = line.rstrip()
-        if line.startswith('>'):
-            name = line.strip('>')
-        else:
-            sequences[name] = sequences[name] + line
-    
-    return sequences
+if __name__ == '__main__':
+    import sys
 
-seqs = list(fasta_to_dict('../../../Downloads/rosalind_splc.txt').values())
-mrna = seqs.pop(0)
-
-for intron in seqs:
-	loc = mrna.find(intron)
-	mrna = mrna[:loc] + mrna[loc + len(intron):]
-
-mrna = Seq(mrna)
-print(mrna.translate(to_stop = True))
-
-
+    introns = fasta_to_list(sys.argv[1])
+    print(translate(splice(introns.pop(0), introns)))

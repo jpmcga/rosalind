@@ -1,4 +1,4 @@
-# Error Completing a Tree by Rosalind.com
+# Completing a Tree by Rosalind.com
 # See https://rosalind.info/problems/tree/
 # Solved July 2020, revised February 2023
 
