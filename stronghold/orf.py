@@ -1,43 +1,22 @@
-import sys
-from utils import codon_table, fasta_to_dict, reverse_comp 
+# Open Reading Frames by Rosalind.com
+# See https://rosalind.info/problems/orf/
+# Solved Sept 2020, revised March 2023
 
-def get_orfs(s):
-	
-	s = s.replace('T', 'U')
-	orfs = []
-	for p in range(len(s)):
-		if s[p:p+3] == 'AUG':
-			prot = []
-			p2 = p
-			for x in range(len(s[p2:])):
-				codon = s[p2:p2+3]
-				if len(codon) == 3:
-					if codon in ['UAG', 'UAA', 'UGA']:
-						orfs.append(''.join(prot))
-						break
-					prot.append(codon_table[codon]) 
-					p2 += 3
-	
-	return set(orfs)
+import re
+from typing import List
+from utils import fasta_to_list, reverse_comp, transcribe, translate
 
-# s = fasta_to_dict(sys.argv[1]).value()
-s = 'GATAAGTATCCTCGCATTTCCACGACGTCTTAGGTATCCTCCTAACGCACGGGCAGAAGG\
-ATAGCTGAGATAATTTAGGTAGCCAATCAGTCAAGAAAATCGTCGCTGGTGGTCGGCATC\
-AACTAATACAGTGACGGTTCACCATGCGGAAGTCCGGTATAGGCCGGATGGTTACTCGCT\
-CCAGCGTTAACAATGTGAATTGCATGTGTCCGTTTCCTTGGCTTGTCTGAGTCCTAACTC\
-AATATGACGACTGTGCAGGTACGTCGTAACGGGAGACAGTGTCGAGAGTCGGTACCTTAC\
-GATTGTAAATTAAATACGCCTCATTAGGGCCTGCTATTTACTATGTGGATATTCAAGTCT\
-CATGAGATTCCTTATTTCTGCCCGAAGGTTATCTGTACCTATGCGAATGAATCCGAGGTT\
-ACCGACAGCCCGCGGGTAGCTACCCGCGGGCTGTCGGTAACCTCGGATTCATCAAGTCTC\
-ATCCTCAATCCCCACACGACGGCGTGATGCACCTCCCGTGGGCCGTCTTACATATCCATG\
-ATTCGTGGCAAGGACCCTTGCTTCAAAGTCGACAACGAGGTTTTTGGAATCAGTCTTTGG\
-GCCATCTAGCGGGGATGGAGCGCCCGGTCCGACGTCCCGACCCTGTAAAGGGGAATCGAC\
-TCCTTAGGGTCGGTCCGCTTACCGTAAGGGTCCGGCATGACAAGGATCCACTGCCACACT\
-CGGGGCGAGCCCTACTGCGAGGTGGATTGGACTAACAACACGAGAGAGGCTAATGCACCT\
-TATACTCGGATGCCCTGATATTTGCCGGTTTCCATTCCTGCGTGGAGTCTTCTGAGCGCC\
-TGTGTCTAAATACGTAGATGTTCTCGTTCCAAGGTTCG'
-orfs = set()
-for string in [s, reverse_comp(s)]:
-	orfs.update(get_orfs(string))
-for orf in orfs:
-	print(orf)
+
+def get_orfs(seq: str, rc: bool=True) -> List[str]:
+    
+    if rc:
+        seq = '\n'.join([seq, reverse_comp(seq)])
+    
+    return [match[0] for match in re.findall('(?=(ATG(...)*?(TAG|TAA|TGA)))', seq)]
+
+
+if __name__ == '__main__':
+    import sys
+    orfs = get_orfs(fasta_to_list(sys.argv[1])[0])
+    for p in {translate(transcribe(orf)) for orf in orfs}:
+        print(p)

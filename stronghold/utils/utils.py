@@ -10,20 +10,20 @@ def test_nucleotides(string: str):
     assert all(ele.upper() in list('ATCGU') for ele in string),\
                     'Input must be DNA nucleotides'
 
-def transcribe_dna(dna_seq: str) -> str:
+def transcribe(seq: str) -> str:
     try:
-        dna_seq = dna_seq.upper().rstrip()
+        seq = seq.upper().rstrip()
     except TypeError:
         'Input must be a string'
-    test_nucleotides(dna_seq)
+    test_nucleotides(seq)
 
-    return dna_seq.replace('T', 'U')
+    return seq.replace('T', 'U')
 
 def translate(seq: str) -> str:
 
     seq = seq.upper()
     test_nucleotides(seq)
-    
+
     if 'T' in seq:
         assert 'U' not in seq, 'Input must be either DNA or RNA'
         seq = seq.replace('T', 'U')
