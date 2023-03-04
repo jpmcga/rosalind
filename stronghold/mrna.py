@@ -1,38 +1,15 @@
+# Solution for Inferring mRNA from Protein by Rosalind.com
+# See https://rosalind.info/problems/mrna/
+# Solved Sept 2020, revised March 2023
+
 from utils import codon_table
-import sys
+from collections import Counter
+from functools import reduce
 
-def count_dict_values(d):
-	'''
-	Takes a dict; returns a dict where each key is a value from input
-	dict and each value is a count of the original values.
-	'''
-
-	count_d = {}
-	for v in d.values():
-		if v not in count_d:
-			count_d[v] = 1
-		else:
-			count_d[v] += 1
-
-	return count_d
-
-
-def protein_to_rna_mod(protein, n):
-
-	codon_counts = count_dict_values(codon_table)
-
-	product = 1
-	for char in protein:
-		product *= codon_counts[char]
-
-	return product * 3 % n
-
-
-def main():
-	protein = open(sys.argv[1]).read().strip()
-	print(protein_to_rna_mod(protein, int(sys.argv[2])))
-
+def gene_combinations(protein: str) -> str:    
+    counts = Counter(codon_table.values())
+    return reduce(lambda a,b: a*b, [counts[aa] for aa in protein]) * 3 % 1000000
 
 if __name__ == '__main__':
-	main()
-	
+    import sys
+    print(gene_combinations(open(sys.argv[1]).read().rstrip()))

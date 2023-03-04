@@ -1,4 +1,4 @@
-# RNA Splicing by Rosalind.com
+# Solution for RNA Splicing by Rosalind.com
 # See https://rosalind.info/problems/splc/
 # Solved June 2020, revised March 2023
 

@@ -1,4 +1,4 @@
-# Open Reading Frames by Rosalind.com
+# Solution for Open Reading Frames by Rosalind.com
 # See https://rosalind.info/problems/orf/
 # Solved Sept 2020, revised March 2023
 
