@@ -1,24 +1,25 @@
-import itertools
-import sys
+# Solution for k-Mer Composition by Rosalind.com
+# See https://rosalind.info/problems/kmer/
+# Solved Sept 2020, revised March 2023
 
-filename = sys.argv[1]
-seq = []
-with open(filename) as file:
-	file.readline()
-	for line in file:
-		seq.append(line.strip())
-	seq = ''.join(seq)
+import re
 
-perms = list(itertools.product('ATCG', repeat = 4))
-perms = sorted([''.join(x) for x in perms])
+from itertools import product
+from typing import List
 
-counts = [0 for item in perms]
-dic = dict(zip(perms, counts))
+def get_kmers(seq: str, k: int) -> List[int]:
+    '''Return counts of all kmers in seq, listed lexographicly.
+    Probably faster with collections.Counter, but used regex.
+    '''
 
-for x in range(len(seq)):
-	kmer = seq[x:x+4]
-	if len(kmer) == 4:
-		dic[kmer] += x
+    return [
+    len(re.findall(f'(?=({s}))', seq))
+    for s in sorted([''.join(s) for s in list(product('ATCG', repeat=4))])
+]
 
-for value in dic.values():
-	print(value, end = ' ')
+if __name__ == '__main__':
+    import sys
+    from utils import fasta_to_list
+
+    for count in get_kmers(fasta_to_list(sys.argv[1])[0], 4):
+        print(count, end=' ')

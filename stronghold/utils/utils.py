@@ -4,7 +4,50 @@ from collections import defaultdict
 from os import PathLike
 from typing import List, TextIO, Union
 
-   
+
+def fasta_to_dict(fasta: Union[str, PathLike]) -> dict:
+    '''Passes either a filepath or string to parse_fasta'''
+    
+    if '>' in fasta:
+        return parse_fasta(fasta.split('\n'))    
+    elif '.' in fasta:
+        with open(fasta) as file:
+            return parse_fasta(file)
+    return 'Check filepath'
+
+def fasta_to_list(fasta: Union[str, PathLike]) -> List[str]:
+    '''Returns list of strings from fasta file.'''
+
+    with open(fasta) as file:
+        return [
+            seq.replace('\n', '') for seq in re.split('>\w*\\n', file.read())
+            if len(seq) > 0
+        ]    
+
+def get_hamming(s1: str, s2: str) -> int:
+    assert len(s1) == len(s2), 'Strings must be same length!'
+    return sum([1 for pos in range(len(s1)) if s1[pos] != s2[pos]])   
+
+def get_gc(seq: str) -> float:
+    seq = seq.upper()
+    return ((seq.count('G') + seq.count('C')) / len(seq)) * 100
+
+def parse_fasta(entry: Union[TextIO, List[str]]) -> dict:
+    '''Iterate through file or list of each line of a fasta and return
+    dict with {id : sequence}.
+    '''
+    sequences = defaultdict(str)
+    for line in entry:
+        if line.startswith('>'):
+            name = line.strip('>').rstrip()
+        else:
+            sequences[name] += line.rstrip()
+    return sequences
+
+def reverse_comp(dna_seq: str) -> str:
+    test_nucleotides(dna_seq)
+    return ''.join([basepair_table[bp] for bp in dna_seq.upper()[::-1]])
+
 def test_nucleotides(string: str):
     '''Check all characters in string are one of A,T,C,G.'''
     assert all(ele.upper() in list('ATCGU') for ele in string),\
@@ -35,49 +78,6 @@ def translate(seq: str) -> str:
     return (
         "".join([codon_table[seq[p:p+3]] for p in range(len(seq))[::3]][:-1])
     )
-
-def get_hamming(s1: str, s2: str) -> int:
-    assert len(s1) == len(s2), 'Strings must be same length!'
-    return sum([1 for pos in range(len(s1)) if s1[pos] != s2[pos]])
-
-def get_gc(seq: str) -> float:
-    seq = seq.upper()
-    return ((seq.count('G') + seq.count('C')) / len(seq)) * 100
-
-def reverse_comp(dna_seq: str) -> str:
-    test_nucleotides(dna_seq)
-    return ''.join([basepair_table[bp] for bp in dna_seq.upper()[::-1]])
-
-def parse_fasta(entry: Union[TextIO, List[str]]) -> dict:
-    '''Iterate through file or list of each line of a fasta and return
-    dict with {id : sequence}.
-    '''
-    sequences = defaultdict(str)
-    for line in entry:
-        if line.startswith('>'):
-            name = line.strip('>').rstrip()
-        else:
-            sequences[name] += line.rstrip()
-    return sequences
-
-def fasta_to_dict(fasta: Union[str, PathLike]) -> dict:
-    '''Passes either a filepath or string to parse_fasta'''
-    
-    if '>' in fasta:
-        return parse_fasta(fasta.split('\n'))    
-    elif '.' in fasta:
-        with open(fasta) as file:
-            return parse_fasta(file)
-    return 'Check filepath'
-
-def fasta_to_list(fasta: Union[str, PathLike]) -> List[str]:
-    '''Returns list of strings from fasta file.'''
-
-    with open(fasta) as file:
-        return [
-            seq.replace('\n', '') for seq in re.split('>\w*\\n', file.read())
-            if len(seq) > 0
-        ]    
 
 basepair_table = {
     'A': 'T',
