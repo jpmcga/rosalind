@@ -2,6 +2,7 @@
 
 # Solution for Calculating Expected Offspring by Rosalind.com
 # See https://rosalind.info/problems/iev/
+# Solved Sept 2022
 
 from utils.utils import mendelian_dominance_table as mdt
 
