@@ -1,40 +1,27 @@
-from itertools import product
-import sys
+# Ordering Strings of Varying Length Lexicographically by Rosalind.com
+# See https://rosalind.info/problems/lexv/
+# Solved July 2020, revised March 2023
 
-def order_kmers_lex(alphabet, num):
+import itertools
+from typing import List
 
-	alphabet = alphabet.split()
-	a_str = "".join(alphabet)
-	a_str_srt = "".join(sorted(alphabet))
+def lexv(string: str, length: int) -> List[str]:
 
-	lst = []
-	for i in range(1,num+1):
-		prod = list(product(alphabet, repeat=num))
-		lst.extend(prod)
+    string = string.replace(' ', '')
 
-	lst = [''.join(x) for x in lst]
-	lst.sort(key=lambda x: (x, len(x)))
+    strings = []
+    for i in range(1, length+1):
+        strings.extend(list(itertools.product(string, repeat=i)))
+    strings = [''.join(s) for s in strings]
 
-	trans_tab = lst[0].maketrans(a_str_srt, a_str)
-	new = [x.translate(trans_tab) for x in lst]
+    lookup = str.maketrans(string, ''.join(sorted(string)))
 
-	return new
-
-
-def main():
-
-	in_handle = open(sys.argv[1])
-	
-	alphabet = in_handle.readline().strip()
-	num = int(in_handle.readline())
-
-	lst = order_kmers_lex(alphabet, num)
-
-	res = '\n'.join(''.join(x) for x in lst)
-	out_handle = open(sys.argv[2], "w")
-	out_handle.write(res)
-	out_handle.close()
-
+    return sorted(strings, key=lambda x: x.translate(lookup))
 
 if __name__ == '__main__':
-	main()
+	import sys
+
+	with open(sys.argv[1]) as file, open('results/result_lexv.txt', 'w') as out:
+		string, length = file.readline().rstrip(), int(file.readline().rstrip())
+		for x in lexv(string, length):
+			out.write(f'{x}\n')
