@@ -1,6 +1,6 @@
 # Ordering Strings of Varying Length Lexicographically by Rosalind.com
 # See https://rosalind.info/problems/lexv/
-# Solved July 2020, revised March 2023
+# Solved August 2020, revised March 2023
 
 import itertools
 from typing import List
