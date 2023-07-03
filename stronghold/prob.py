@@ -1,6 +1,6 @@
 # Introduction to Random Strings by Rosalind.com
 # See https://rosalind.info/problems/prob/
-# Solved Match 2023
+# Solved March 2023
 
 import numpy as np
 from typing import List
